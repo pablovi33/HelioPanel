@@ -2,30 +2,6 @@
 #include <WiFi.h>
 #include <esp_now.h>
 #include <string.h>
- // Rui Santos https://RandomNerdTutorials.com/esp-now-esp32-arduino-ide/
-
-//#define x_paso 26    // Define el Pin de STEP para Motor de eje X
-//#define x_dire 12   // Define el Pin de DIR  para Motor de eje X
-//#define x_habi 27    // Define el Pin de ENABLE  para Motor de eje X
-
-
-//#define x_paso 35    // Define el Pin de STEP para Motor de eje X
-//#define x_dire 34   // Define el Pin de DIR  para Motor de eje X
-//#define x_habi 32    // Define el Pin de ENABLE  para Motor de eje X
-
-//#define x_dire 6   // Define el Pin de DIR  para Motor de eje X
-//#define x_paso 7    // Define el Pin de STEP para Motor de eje X
-//#define x_habi 8    // Define el Pin de ENABLE  para Motor de eje X
-
-//#define x_dire 15   // Define el Pin de DIR  para Motor de eje X
-//#define x_paso 2    // Define el Pin de STEP para Motor de eje X
-//#define x_habi 0    // Define el Pin de ENABLE  para Motor de eje X
-
-
-
-//#define x_dire 4   // Define el Pin de DIR  para Motor de eje X
-//#define x_paso 0    // Define el Pin de STEP para Motor de eje X
-//#define x_habi 2    // Define el Pin de ENABLE  para Motor de eje X
 
 #define x_dire 2   // Define el Pin de DIR  para Motor de eje X
 //#define x_dire 15   // Define el Pin de DIR  para Motor de eje X
@@ -34,22 +10,14 @@
 
 #define LED1 12
 
-
-
-
-
 const int buttonPin0 = 34;  // pin asociado al boton 0
 const int  buttonPin1 = 35;  //pin asociado al boton 1
 
 int buttonState0 = 0;  // variable del estado del botOn
 int buttonState1 = 0;  // variable del estado del botOn
 
-
-
 //int retardo = 3000;   // Menor numero el giro es mas rapido
 //int tiempo = 200;   // durante cuanto timpo da el giro el motor (vueltas)
-
-
 
 void giro(int paso_,int dire_,int habi_,int dir,int retardo,int tiempo=200) {
    digitalWrite(habi_, LOW);  // Habilita el Driver
@@ -172,18 +140,15 @@ void loop()
   int lectura2 = lectura2String.toInt();
 
    
-  
   // Imprimir los valores obtenidos
   //Serial.print("Lectura 1: ");
   //Serial.println(lectura1);
   //Serial.print("Lectura 2: ");
   //Serial.println(lectura2);
-  
-  
+
 //Serial.print(buttonState0);
 //Serial.println(buttonState1);
 
-  
         //afuera es 35 button pin 1 es afuera
         //Serial.println("boton1");
         if((buttonState0 == HIGH)||(buttonState1 == HIGH)){
@@ -208,7 +173,8 @@ void loop()
                     case 306:
                      digitalWrite(x_habi, LOW); 
                      //giro1(x_paso, x_dire, x_habi,HIGH,6,875,775,2);
-                     giro1(x_paso, x_dire, x_habi,HIGH,6,875,825,1000);
+                     //giro1(x_paso, x_dire, x_habi,HIGH,6,875,825,1000);
+                       giro1(x_paso, x_dire, x_habi,HIGH,2,875,775,400);
                     break;
       
                    case 307:
@@ -265,7 +231,8 @@ void loop()
                     case 303:
                       digitalWrite(x_habi, LOW); 
                     //giro1(x_paso, x_dire, x_habi,LOW,6,875,775,2);
-                    giro1(x_paso, x_dire, x_habi,LOW,6,875,825,1000);
+                    //giro1(x_paso, x_dire, x_habi,LOW,6,875,825,1000);
+                    giro1(x_paso, x_dire, x_habi,LOW,2,875,775,400);
                   
                     break;
 
@@ -304,8 +271,9 @@ void loop()
 
              case 303:
                 digitalWrite(x_habi, LOW); 
-              //giro1(x_paso, x_dire, x_habi,LOW,6,875,775,2);
-               giro1(x_paso, x_dire, x_habi,LOW,6,875,825,1000);                
+              giro1(x_paso, x_dire, x_habi,LOW,2,875,775,400);
+              //AJUSTE a 4 CLICK
+               //giro1(x_paso, x_dire, x_habi,LOW,6,875,825,1000);                
             break;
 
 
@@ -326,9 +294,11 @@ void loop()
             break;
 
             case 306:
+            //AJUSTE a 4 CLICK
               digitalWrite(x_habi, LOW); 
              //giro1(x_paso, x_dire, x_habi,HIGH,6,875,775,2);
-               giro1(x_paso, x_dire, x_habi,HIGH,6,875,825,1000);
+              // giro1(x_paso, x_dire, x_habi,HIGH,6,875,825,1000);
+               giro1(x_paso, x_dire, x_habi,HIGH,2,875,775,400);
             break;
 
             default:

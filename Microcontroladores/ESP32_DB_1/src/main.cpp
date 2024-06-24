@@ -13,6 +13,11 @@
 
 #define I2C_ADDRESS 0x50 // Dirección I2C deseada para el dispositivo
 
+
+//#define fotoRes0 33//SI HA FUNCIIONADO
+//#define fotoRes0 34//SI HA FUNCIIONADO
+//#define fotoRes0 35//SI HA FUNCIIONADO
+
 #define fotoRes0 36//SI HA FUNCIIONADO
 #define fotoRes1 39//SI HA FUNCIIONADO
 
@@ -28,6 +33,8 @@
 
 int fotoRes0_val;
 int fotoRes1_val;
+
+int detectaSol=0;
 
 
 
@@ -91,7 +98,10 @@ int tiempo = 200;   // durante cuanto timpo da el giro el motor (vueltas)
 //uint8_t broadcastAddress[] = {0xD4,0x8A,0xFC,0xA6,0x37,0xD4};
 
 //D4:8A:FC:A6:B1:70
-uint8_t broadcastAddress[] = {0xD4,0x8A,0xFC,0xA6,0xB1,0x70};
+//uint8_t broadcastAddress[] = {0xD4,0x8A,0xFC,0xA6,0xB1,0x70};
+
+//D4:8A:FC:9F:34:A4
+uint8_t broadcastAddress[] = {0xD4,0x8A,0xFC,0x9F,0x34,0xA4};
 
 typedef struct struct_message
 {
@@ -105,8 +115,8 @@ esp_now_peer_info_t peerInfo;
 // callback when data is sent
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  //Serial.print("\r\nLast Packet Send Status:\t");
+  //Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
 
@@ -134,7 +144,7 @@ void giro(int paso_,int dire_,int habi_,int dir,int retardo,int tiempo) {
 
    }
   }
-  digitalWrite(habi_, HIGH);   // quita la habilitacion del Driver
+  digitalWrite(habi_, HIGH);   // remueve la habilitacion del Driver
 
    
 
@@ -162,7 +172,7 @@ void giro1(int paso_,int dire_,int habi_,int dir,int RAMP,int l_SUP,int l_INF,in
 
 void lecturas(){
   String cadena = "Lectura 0: " + String(fotoRes0_val) + ", Lectura 1: " + String(fotoRes1_val);
-  Serial.println(cadena);
+  //Serial.println(cadena);
 }
 
 // Función para manejar las solicitudes del maestro
@@ -200,21 +210,25 @@ void llegaDato(int bytes) {
     switch (comando)
     {
        case 'a':
-        Serial.println("wire(A)");
+       detectaSol=0;
+        //Serial.println("wire(A)");
          digitalWrite(16,HIGH);
          delay(400);
         break;
         case 'b':
-        Serial.println("wire(B)");
+        detectaSol=0;
+        //Serial.println("wire(B)");
          digitalWrite(16,LOW);
          delay(400);
         break;
         case 'c':
-        Serial.println("wire(C)");
+        detectaSol=0;
+        //Serial.println("wire(C)");
          //giro(x_paso,x_dire,x_habi,HIGH,3000,50);
          delay(400);
         break;
       case 'd':
+      detectaSol=0;
         // Leer las lecturas analógicas y enviarlas al maestro
         fotoRes0_val = analogRead(fotoRes0);
         fotoRes1_val = analogRead(fotoRes1);
@@ -225,104 +239,144 @@ void llegaDato(int bytes) {
         break;
 
       case 'g':
+      detectaSol=0;
         i2espNOW_val=1;
         delay(retINICIO);
-        Serial.print("wire(G):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(G):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'h':
+       detectaSol=0;
         i2espNOW_val=2;
         delay(retINICIO);
-        Serial.print("wire(H):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(H):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'i':
+       detectaSol=0;
        i2espNOW_val=3;
        delay(retINICIO);
-        Serial.print("wire(I):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(I):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'j':
+       detectaSol=0;
        i2espNOW_val=4;
        delay(retINICIO);
-        Serial.print("wire(J):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(J):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'k':
+       detectaSol=0;
        i2espNOW_val=5;
        delay(retINICIO);
-        Serial.print("wire(K):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(K):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'l':
+       detectaSol=0;
            i2espNOW_val=6;
            delay(retINICIO);
-        Serial.print("wire(L):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(L):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'm':
+       detectaSol=0;
         i2espNOW_val=7;
         delay(retINICIO);
-        Serial.print("wire(M):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(M):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
 
        case 'n':
+       detectaSol=0;
         i2espNOW_val=8;
         delay(retINICIO);
-        Serial.print("wire(N):");
-        Serial.println(i2espNOW_val);
+        //Serial.print("wire(N):");
+        //Serial.println(i2espNOW_val);
         delay(retFIN);
        break;
       
       case 'o':
-        Serial.println("motorLado1");
-        giro(x_paso,x_dire,x_habi,HIGH,3000,50);
+      detectaSol=0;
+        //Serial.println("motorLado1");
+        //giro(x_paso,x_dire,x_habi,HIGH,3000,50);
+        giro(x_paso,x_dire,x_habi,HIGH,3000,75);
+        //giro(x_paso,x_dire,x_habi,HIGH,3000,100);
         delay(400);
        break;
 
       case 'p':
-        Serial.println("motorLado2");
-        giro(x_paso,x_dire,x_habi,LOW,3000,50);
+      detectaSol=0;
+        //Serial.println("motorLado2");
+        //giro(x_paso,x_dire,x_habi,LOW,3000,50);
+        giro(x_paso,x_dire,x_habi,LOW,3000,75);
+        //giro(x_paso,x_dire,x_habi,LOW,3000,100);
         delay(400);
       break;
 
        case 'q':
-        i2espNOW_val=9;
-        delay(400);
+
+       //###### CASO SEGUIDOR SOLAR####
+       
+        //i2espNOW_val=9;
+        //delay(400);
+
+        //giro1(x_paso,x_dire,x_habi,HIGH,1,950,800,1);
+        //giro1(x_paso,x_dire,x_habi,LOW,1,950,800,1);
+
+         detectaSol=1;
+
+        
       break;
 
       case 'r':
+      detectaSol=0;
         i2espNOW_val=0;
         delay(400);
       break;
 
       case 's':
-        Serial.println("motorLado1");
-        giro(x_paso,x_dire,x_habi,HIGH,3000,50);
+      detectaSol=0;
+        //Serial.println("motorLado1");
+        //giro(x_paso,x_dire,x_habi,HIGH,3000,100);
+        //void giro1(int paso_,int dire_,int habi_,int dir,int RAMP,int l_SUP,int l_INF,int tiempo=200)
+        giro1(x_paso,x_dire,x_habi,HIGH,1,1000,600,1);
         delay(400);
       break;
 
       case 't':
-           Serial.println("motorLado2");
-        giro(x_paso,x_dire,x_habi,LOW,3000,50);
+      detectaSol=0;
+           //Serial.println("motorLado2");
+        //giro(x_paso,x_dire,x_habi,LOW,3000,100);
+        giro1(x_paso,x_dire,x_habi,LOW,1,950,800,1);
+        delay(400);
+      break;
+
+      case 'u':
+      detectaSol=0;
+           //Serial.println("motorLado2");
+        //giro(x_paso,x_dire,x_habi,LOW,3000,100);
+        giro1(x_paso,x_dire,x_habi,HIGH,1,950,800,1);
+        giro1(x_paso,x_dire,x_habi,LOW,1,950,800,1);
         delay(400);
       break;
     
       default:
+      detectaSol=0;
         comando= 'r';
       break;
     }
@@ -362,7 +416,7 @@ void setup()
   WiFi.mode(WIFI_STA);
   if (esp_now_init() != ESP_OK)
   {
-    Serial.println("Error inicializando ESP-NOW");
+    //Serial.println("Error inicializando ESP-NOW");
     return;
   }
   esp_now_register_send_cb(OnDataSent);
@@ -373,7 +427,7 @@ void setup()
   // Add peer
   if (esp_now_add_peer(&peerInfo) != ESP_OK)
   {
-    Serial.println("Fallo al agregar a peer");
+    //Serial.println("Fallo al agregar a peer");
     return;
   }
 
@@ -404,16 +458,13 @@ void loop()
   buttonState0 = digitalRead(buttonPin0);
     buttonState1 = digitalRead(buttonPin1);
 
-//Serial.print("Lectura 0");
-//Serial.print(fotoRes0_val);
-//Serial.print("Lectura 1");
-//Serial.println(fotoRes1_val);
+
 
   // Imprimir valores en el monitor serial (opcional)
-  //Serial.print("IZQ:");
-  //Serial.print(fotoRes0_val);
-  //Serial.print("DER:");
-  //Serial.print(fotoRes1_val);
+  Serial.print("IZQ:");
+  Serial.print(fotoRes0_val);
+  Serial.print("DER:");
+  Serial.println(fotoRes1_val);
   //Serial.print(" Error: ");
   //Serial.println(error);
   
@@ -425,7 +476,7 @@ void loop()
              switch (i2espNOW_val)
               {
               case 1:
-              Serial.println("CASO 1");
+              //Serial.println("CASO 1");
               //digitalWrite(16,HIGH);
               //giro(x_paso,x_dire,x_habi,HIGH,3000);
                 cadena0 = "301";
@@ -435,7 +486,7 @@ void loop()
                 break;
 
                 case 2:
-                Serial.println("CASO 2");
+                //Serial.println("CASO 2");
                 //digitalWrite(16,LOW);
                 cadena0 = "302";
                 cadena1 = "302";
@@ -444,7 +495,7 @@ void loop()
                 break;
 
                 case 3:
-                Serial.println("CASO 3");
+                //Serial.println("CASO 3");
                 cadena0 = "303";
                 cadena1 = "303";
                 //lecturas();
@@ -452,7 +503,7 @@ void loop()
                 break;
 
                 case 4:
-                Serial.println("CASO 4");
+                //Serial.println("CASO 4");
                 cadena0 = "304";
                 cadena1 = "304";
                 //lecturas();
@@ -460,7 +511,7 @@ void loop()
                 break;
 
               case 5:
-              Serial.println("CASO 5");
+              //Serial.println("CASO 5");
                 cadena0 = "305";
                 cadena1 = "305";
                 //lecturas();
@@ -468,7 +519,7 @@ void loop()
                 break;
 
                 case 6:
-                Serial.println("CASO 6");
+                //Serial.println("CASO 6");
                 cadena0 = "306";
                 cadena1 = "306";
                 //lecturas();
@@ -476,7 +527,7 @@ void loop()
                 break;
 
                 case 7:
-                  Serial.println("CASO 7");
+                  //Serial.println("CASO 7");
                   cadena0 = "307";
                   cadena1 = "307";
 
@@ -485,7 +536,7 @@ void loop()
                   break;
 
                   case 8:
-                  Serial.println("CASO 8");
+                  //Serial.println("CASO 8");
                   cadena0 = "308";
                   cadena1 = "308";
 
@@ -494,39 +545,16 @@ void loop()
                   break;
 
                   case 9:
-                  Serial.println("CASO 9");
+                  //Serial.println("CASO 9");
                   cadena0 = "309";
                   cadena1 = "309";
-                  // Control del motor
-
-                  for(int f=0;f<20;f++){
-                      if (error > precision) {
-                        // Si el error es positivo, girar hacia la izquierda
-                        //myStepper.step(-1);
-                        giro(x_paso,x_dire,x_habi,HIGH,2000,4);
-                        //giro(x_paso,x_dire,x_habi,HIGH,2000,40);
-
-                      } else if (error < -precision) {
-                        // Si el error es negativo, girar hacia la derecha
-                        //myStepper.step(1);
-                        giro(x_paso,x_dire,x_habi,LOW,2000,4);
-                        //giro(x_paso,x_dire,x_habi,HIGH,2000,40);
-
-                      } else {
-                    
-                        // Si el error está dentro del rango deseado, detener el motor
-                        //myStepper.step(0);
-                        //giro(x_paso,x_dire,x_habi,HIGH,2000,4);
-                        digitalWrite(x_habi, HIGH);  // deshabilita el Driver
-
-                      }
-                  }
+     
                 
                  //   etapas=0;
                   break;
 
                 case 0:
-                Serial.println("CASO 0");
+                //Serial.println("CASO 0");
                 cadena0 = "300";
                 cadena1 = "300";
                 //lecturas();
@@ -535,6 +563,44 @@ void loop()
 
               default:
                 break;
+              }
+
+
+              if(detectaSol==1){
+
+                    delay(10);
+
+                    fotoRes0_val = analogRead(fotoRes0);
+                    fotoRes1_val = analogRead(fotoRes1);
+
+                      //if(abs(fotoRes0_val - fotoRes1_val) > 1){
+                              if (fotoRes0_val < fotoRes1_val) {
+                            //sentido 
+                       //     (int motor, int motPausa, int rep, int dir)
+                         //         mimotor.mover(2,5,6,0); 
+                              //giro(int paso_,int dire_,int habi_,int dir,int retardo,int tiempo);
+                              //mimotor.mover(16,10,12,1);  
+                              //giro(x_paso,x_dire,x_habi,HIGH,10,12);
+                              //giro(x_paso,x_dire,x_habi,HIGH,3000,50);
+                              //giro(x_paso,x_dire,x_habi,HIGH,5,6);
+                              giro(x_paso,x_dire,x_habi,HIGH,3000,200);
+                              //Serial.println("positivo");
+                          }
+                          else{
+                              //sentido 
+                                //mimotor.mover(16,10,12,0); 
+                                //giro(x_paso,x_dire,x_habi,LOW,10,12);
+                                //giro(x_paso,x_dire,x_habi,LOW,3000,50);
+                                //giro(x_paso,x_dire,x_habi,LOW,5,6);
+                                giro(x_paso,x_dire,x_habi,LOW,3000,200);
+                                //Serial.println("negativo");
+              
+                          }
+                     // }else{
+                       //     detectaSol=0;
+
+                     // }
+                            
               }
 
 
@@ -551,18 +617,18 @@ delay(10);
 
 
   strncpy(ESP32NowMessage.ESP32NowText, text.c_str(), text.length());
-  Serial.println("Msg to send:" + String(ESP32NowMessage.ESP32NowText));
-  //Serial.println(String(ESP32NowMessage.ESP32NowText));
-  Serial.println("Snd Len:" + String(sizeof(ESP32NowMessage)));
-  // Send message via ESP-NOW
+  //Serial.println("Msg to send:" + String(ESP32NowMessage.ESP32NowText));
+    //Serial.println(String(ESP32NowMessage.ESP32NowText));
+  //Serial.println("Snd Len:" + String(sizeof(ESP32NowMessage)));
+    // Send message via ESP-NOW
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *)&ESP32NowMessage, sizeof(ESP32NowMessage));
   if (result == ESP_OK)
   {
-    Serial.println("Sent with success");
+    //Serial.println("Sent with success");
   }
   else
   {
-    Serial.println("Error sending the data");
+    //Serial.println("Error sending the data");
   }
  
   //delay(1000);
